@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1170" systemVersion="11D50" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1170" systemVersion="11D50" minimumToolsVersion="Xcode 4.2" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Correction" representedClassName="Correction" syncable="YES">
         <relationship name="correctionWords" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CorrectionWord" inverseName="correction" inverseEntity="CorrectionWord" syncable="YES"/>
         <relationship name="grammarQuestions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="GrammarQuestion" inverseName="correction" inverseEntity="GrammarQuestion" syncable="YES"/>
