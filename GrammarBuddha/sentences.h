@@ -16,7 +16,7 @@
     int count;
     NSMutableArray *words[SENTENCES_NUM];
     NSMutableArray *sentWordList;
-    CCSprite *sentenceBox, *buddha;
+    CCSprite *sentenceBox, *buddha, *badBuddha;
     CCSprite *commas[COMMAS_NUM];
     CCSprite *selectedItem;
     int completedSent;
@@ -24,6 +24,7 @@
     int totalScore;
     int gameTimer;
     CCLabelTTF *scoreLabel;
+    CCLabelTTF *badScoreLabel;
     CCLabelTTF *timerLabel;
     
     // -- for swiping

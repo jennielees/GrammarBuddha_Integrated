@@ -40,6 +40,8 @@ BOOL res[5];
 
 
 -(void)  repostionSentence:(int)index {
+    [[SimpleAudioEngine sharedEngine] playEffect:@"bubbleDropAudio.mp3"];
+
     int i = 0;
     int x = 100;
     float hightIndex[3] = {0.7, 0.4, 0.25};
@@ -187,8 +189,8 @@ BOOL res[5];
         CCMenu *menu = [CCMenu menuWithItems:forwordItem, backwordItem, back, nil];
         menu.position = ccp(0,0);
       //  [self addChild:menu];
-        [[SimpleAudioEngine sharedEngine] preloadEffect:@"wrongSound.caf"];
-        [[SimpleAudioEngine sharedEngine] preloadEffect:@"rightSound.mp3"];
+//        [[SimpleAudioEngine sharedEngine] preloadEffect:@"wrongSound.caf"];
+        [[SimpleAudioEngine sharedEngine] preloadEffect:@"bubbleDropAudio.mp3"];
         
         buddha = [CCSprite spriteWithFile:@"cloudBuddha.png"];
         buddha.position = ccp(winSize.width-(buddha.contentSize.width*0.6), winSize.height - buddha.contentSize.height*0.6);
@@ -225,10 +227,25 @@ BOOL res[5];
         [self schedule:@selector(tick:) interval:1];//using zero for the interval will just sync us with the default refresh, usually every 1/60 second
 
         if ([GameManager sharedGameManager].isMultiplayerON) {
-            // Put the multiplayer assets up too.
+            // Put the multiplayer assets up 
+            
+            badBuddha = [CCSprite spriteWithFile:@"badBuddha.png"];
+            badBuddha.position = ccp(winSize.width-(buddha.contentSize.width*0.6),buddha.contentSize.height*0.6);
+            badBuddha.scaleX = 0.6;
+            badBuddha.scaleY = 0.6;
+            [self addChild:badBuddha z:10];
             
             
+            CCSprite *badCloud = [CCSprite spriteWithFile:@"badScoreCloud.png"];
+            badCloud.position = ccp((winSize.width-(buddha.contentSize.width*0.6)-135), 60);
             
+            [self addChild:badCloud z:15];
+            
+            badScoreLabel = [CCLabelTTF labelWithString:@"0" fontName:@"Helvetica-Bold" fontSize:42];
+            badScoreLabel.color = ccBLACK;
+            badScoreLabel.position = ccp((winSize.width-260), 60);
+            [self addChild:badScoreLabel z:55];
+                
         }
         
         self.isTouchEnabled = YES;
@@ -382,7 +399,6 @@ BOOL res[5];
     [[CCDirector sharedDirector] replaceScene:[Result scene]];
 }
 -(void) playResult:(CCSprite *) result {
-    [[SimpleAudioEngine sharedEngine] playEffect:@"bubbleDropAudio.mp3"];
     CGSize winSize = [CCDirector sharedDirector].winSize;
 
  //   id rotate = [CCRotateBy actionWithDuration:1 angle:-50];
@@ -452,14 +468,18 @@ BOOL res[5];
     NSLog(@"lastTouch.y: %f", lastTouch.x);
     NSLog(@"lastTouch.y: %f", lastTouch.y);
     
+    double delayInSeconds = 2.0;
+    
     if (firstTouch.y < 500 && firstTouch.y > 300 && firstTouch.x > lastTouch.x && swipeLength > 200) {
         // Call next Sentence
         NSLog(@"Detected a swipe over 200");
        
-        id delay = [CCDelayTime actionWithDuration: 2];
-        [self runAction:delay];
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self checkSentenceAndIncrement:1000];
 
-        [self checkSentenceAndIncrement:1000];
+        });
+
        
         for(int i = 0;i < words[count].count; i++) {
             CCLabelTTF *word1 = [sentWordList objectAtIndex:i];
@@ -515,26 +535,30 @@ BOOL res[5];
             }
             
             if(CGRectContainsPoint(dropArea, touchLocation)) {
-                id delay = [CCDelayTime actionWithDuration: 3.0f];
-                [self runAction:delay];
+                [self checkSentenceAndIncrement:i];
 
-                [self checkSentenceAndIncrement:i]; // removed into its own function
-                id moveAction = [CCMoveBy actionWithDuration:1.0f
-                                                    position:ccp(-1500, 0)];
-                id moveEffect = [CCEaseIn actionWithAction:moveAction rate:0.8f];
+                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                    
+                    id moveAction = [CCMoveBy actionWithDuration:1.0f
+                                                        position:ccp(-1500, 0)];
+                    id moveEffect = [CCEaseIn actionWithAction:moveAction rate:0.8f];
+                    
+                    for(int i = 0;i < words[count].count; i++) {
+                        CCLabelTTF *word1 = [sentWordList objectAtIndex:i];
+                        
+                        // ANIMATE CODE
+                        [word1 runAction:[[moveEffect copy] autorelease]];
+                        
+                        //    NSLog(@"Ran move effect");
+                        
+                    }
+                    [selectedItem runAction:[[moveEffect copy] autorelease]];
+                    
+
+                });
                 
-                for(int i = 0;i < words[count].count; i++) {
-                    CCLabelTTF *word1 = [sentWordList objectAtIndex:i];
-                    
-                    // ANIMATE CODE
-                     [word1 runAction:[[moveEffect copy] autorelease]];
-                    
-                    //    NSLog(@"Ran move effect");
-                    
-                }
-                [selectedItem runAction:[[moveEffect copy] autorelease]];
-
-                // this checking needs cleanup!
+                              // this checking needs cleanup!
                 break;            
             } else {
                 selectedItem.position = orgPos;
@@ -546,13 +570,32 @@ BOOL res[5];
 
 - (void)tick:(ccTime)dt {
     gameTimer++;
-    NSLog(@"Ticking tick tick");
+    //NSLog(@"Ticking tick tick");
     int totalMins = gameTimer/60;
     int totalSecs = gameTimer-(totalMins*60);
     if (totalSecs < 10) {
         [timerLabel setString:[NSString stringWithFormat:@"%d:0%d",totalMins,totalSecs]];
     } else {
         [timerLabel setString:[NSString stringWithFormat:@"%d:%d",totalMins,totalSecs]];
+    }
+    
+    // enemy scored!
+    if (gameTimer == 4) {
+        [badScoreLabel setString:@"100"];
+        badBuddha.scaleX = 0.7;
+        badBuddha.scaleY = 0.7;
+    }
+    
+    if (gameTimer == 9) {
+        [badScoreLabel setString:@"200"];
+        badBuddha.scaleX = 0.8;
+        badBuddha.scaleY = 0.8;
+    }
+    
+    if (gameTimer == 14) {
+        [badScoreLabel setString:@"300"];
+        badBuddha.scaleX = 0.9;
+        badBuddha.scaleY = 0.9;
     }
     
    // timeElapsed = ticker/frameRate;

@@ -111,8 +111,9 @@
   //  [[CCDirector sharedDirector] replaceScene:[Sentences scene]];
     [GameManager sharedGameManager].isMultiplayerON = YES;
 
-    [[GameManager sharedGameManager] runSceneWithID:kCustomScene];
-    
+    //[[GameManager sharedGameManager] runSceneWithID:kArcadeScene];
+    [[CCDirector sharedDirector] replaceScene:[Sentences scene]];
+
 }
 
 -(void) playPractice {
@@ -133,7 +134,7 @@
 		[background setPosition:ccp(screenSize.width/2, screenSize.height/2)];
 		[self addChild:background];
 		[self displayMainMenu];
-		
+        [[SimpleAudioEngine sharedEngine] playEffect:@"menuInitialLoad.mp3"];
 		// Skipping the floating viking
 	}
 	return self;

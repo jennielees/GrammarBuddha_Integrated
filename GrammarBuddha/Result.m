@@ -55,7 +55,7 @@
         
         int score = [GameManager sharedGameManager].latestScore;
         CCLabelTTF *label = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",score ] fontName:@"lastninja" fontSize:50];
-        label.position = ccp(screenSize.width/2, screenSize.height/2-20);
+        label.position = ccp(screenSize.width/2, screenSize.height/2-10);
         label.color = ccRED;
         [self addChild:label];
         
