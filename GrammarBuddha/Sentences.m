@@ -14,7 +14,7 @@
 #import "Result.h"
 #import "MainMenuLayer.h"
 static const CGPoint comPos[3] = {
-    {1024*0.33, 614}, {512, 614}, {1024*0.67, 614},
+    {200, 200}, {400, 200}, {600, 200},
 };
 BOOL res[5];
 
@@ -114,7 +114,7 @@ BOOL res[5];
         
         // ANIMATE CODE
         [word runAction:[[moveEffect copy] autorelease]];
-        NSLog(@"Ran move effect");
+//        NSLog(@"Ran move effect");
 
         
         [self addChild:word];
@@ -125,14 +125,14 @@ BOOL res[5];
 
 -(void) setupCommas {
     NSString *f[4] = {
-      @"bubble1.png", @"bubble2.png", @"bubble3.png", @"bubble4.png",  
+      @"commaBubble.png", @"semiBubble.png", @"periodBubble.png",  
     };
     NSString *l[COMMAS_NUM] = {
       @",", @";", @".",  
     };
     for(int i = 0; i < COMMAS_NUM; i++) {
-        commas[i] = [CCLabelTTF labelWithString:l[i] fontName:@"Arial" fontSize:50];
-        CCSprite *bubble = [CCSprite spriteWithFile:f[arc4random()%4]];
+        commas[i] = [CCLabelTTF labelWithString:l[i] fontName:@"Helvetica-Bold" fontSize:60 ];
+        CCSprite *bubble = [CCSprite spriteWithFile:f[i]];
         commas[i].color = ccBLACK;
         bubble.position = ccp(commas[i].contentSize.width/2, commas[i].contentSize.height/2);
         [commas[i] addChild:bubble z:-1 tag:8];
@@ -182,14 +182,43 @@ BOOL res[5];
         back.position= ccp(50, 50);
         CCMenu *menu = [CCMenu menuWithItems:forwordItem, backwordItem, back, nil];
         menu.position = ccp(0,0);
-        [self addChild:menu];
+      //  [self addChild:menu];
         [[SimpleAudioEngine sharedEngine] preloadEffect:@"wrongSound.caf"];
         [[SimpleAudioEngine sharedEngine] preloadEffect:@"rightSound.mp3"];
         
         buddha = [CCSprite spriteWithFile:@"cloudBuddha.png"];
-        buddha.position = ccp(buddha.contentSize.width*0.6, winSize.height - buddha.contentSize.height*0.6);
+        buddha.position = ccp(winSize.width-(buddha.contentSize.width*0.6), winSize.height - buddha.contentSize.height*0.6);
         buddha.scaleX = 0.6;
+        buddha.scaleY = 0.6;
         [self addChild:buddha z:10];
+
+        
+        CCSprite *cloud = [CCSprite spriteWithFile:@"goodScoreCloud.png"];
+        cloud.position = ccp((winSize.width-(buddha.contentSize.width*0.6)-135), (winSize.height-60));
+
+        [self addChild:cloud z:15];
+        
+        CCSprite *timerBack = [CCSprite spriteWithFile:@"timerBack.png"];
+        timerBack.position = ccp(200, (winSize.height - timerBack.contentSize.height*0.5));
+        
+        [self addChild:timerBack z:15];
+
+        // labels
+        timerLabel = [CCLabelTTF labelWithString:@"0:00" fontName:@"Helvetica-Bold" fontSize:42 ];
+        timerLabel.color = ccBLACK;
+        timerLabel.position = ccp(200, (winSize.height + 30 - timerBack.contentSize.height*0.5));
+        [self addChild:timerLabel z:55];
+        
+        scoreLabel = [CCLabelTTF labelWithString:@"0" fontName:@"Helvetica-Bold" fontSize:42];
+        scoreLabel.color = ccBLACK;
+        scoreLabel.position = ccp((winSize.width-260), (winSize.height-60));
+        [self addChild:scoreLabel z:55];
+        
+        
+        
+        [self schedule:@selector(tick:) interval:1];//using zero for the interval will just sync us with the default refresh, usually every 1/60 second
+
+        
         
         self.isTouchEnabled = YES;
 	}
@@ -344,22 +373,27 @@ BOOL res[5];
     [[SimpleAudioEngine sharedEngine] playEffect:@"bubbleDropAudio.mp3"];
     CGSize winSize = [CCDirector sharedDirector].winSize;
 
-    id rotate = [CCRotateBy actionWithDuration:1 angle:-50];
-    id rotateBk = [rotate reverse];
-    id seq = [CCSequence actions:rotate, rotateBk, nil];
-    id blink = [CCBlink actionWithDuration:2 blinks:3];
-    id spawn1 = [CCSpawn actions:seq, blink, nil];
-    id move = [CCMoveTo actionWithDuration:1 position:ccp(winSize.width, winSize.height)];
+ //   id rotate = [CCRotateBy actionWithDuration:1 angle:-50];
+   // id rotateBk = [rotate reverse];
+  //  id seq = [CCSequence actions:rotate, rotateBk, nil];
+ //   id blink = [CCBlink actionWithDuration:2 blinks:3];
+    //id spawn1 = [CCSpawn actions: blink, nil];
+    id move = [CCMoveTo actionWithDuration:1 position:ccp(winSize.width-200, winSize.height-70)];
     id feadout = [CCScaleTo actionWithDuration:1 scale:0.2];
     id spawn = [CCSpawn actions:move, feadout, nil];
     id remove3 = [CCCallFuncND actionWithTarget:result  selector:@selector(removeFromParentAndCleanup:) data:(void*)YES];
-    [result runAction:[CCSequence actions:spawn1, spawn, remove3, nil]];
+    [result runAction:[CCSequence actions:spawn, remove3, nil]];
+    
+    // Removed code to display the checkmark, now we are going to update the score
+    
+    totalScore += 100;
+    [scoreLabel setString:[NSString stringWithFormat:@"%d",totalScore]];
     
     if(completedSent==SENTENCES_NUM) {
-        [self performSelector:@selector(gotoResult) withObject:nil afterDelay:4];
+        [self performSelector:@selector(gotoResult) withObject:nil afterDelay:1];
     } else {
         
-        [self performSelector:@selector(goSentences2) withObject:nil afterDelay:3];
+        [self performSelector:@selector(goSentences2) withObject:nil afterDelay:1];
     }
 }
 // BEGIN CHANGED GESTURE CODE
@@ -380,7 +414,7 @@ BOOL res[5];
     // should check the right or wrong
     res[completedSent] = TRUE;
     CGSize winSize = [CCDirector sharedDirector].winSize;
-    CCSprite *rightSprite = [CCSprite spriteWithFile:@"right.png"];
+    CCSprite *rightSprite = [CCSprite spriteWithFile:@"oneHundredPoints.png"];
     rightSprite.position = ccp(winSize.height/2, winSize.width/2);
     [self addChild:rightSprite z:20000];
     [self performSelector:@selector(playResult:) withObject:rightSprite afterDelay:1];
@@ -420,7 +454,7 @@ BOOL res[5];
                                                 position:ccp(-1500, 0)];
             id moveEffect = [CCEaseIn actionWithAction:moveAction rate:0.8f];
             [word1 runAction:[[moveEffect copy] autorelease]];
-            NSLog(@"Ran move effect");
+        //    NSLog(@"Ran move effect");
                      
          }
         
@@ -466,8 +500,24 @@ BOOL res[5];
             }
             
             if(CGRectContainsPoint(dropArea, touchLocation)) {
-           
+                
+
                 [self checkSentenceAndIncrement:i]; // removed into its own function
+                id moveAction = [CCMoveBy actionWithDuration:1.0f
+                                                    position:ccp(-1500, 0)];
+                id moveEffect = [CCEaseIn actionWithAction:moveAction rate:0.8f];
+                
+                for(int i = 0;i < words[count].count; i++) {
+                    CCLabelTTF *word1 = [sentWordList objectAtIndex:i];
+                    
+                    // ANIMATE CODE
+                     [word1 runAction:[[moveEffect copy] autorelease]];
+                    
+                    //    NSLog(@"Ran move effect");
+                    
+                }
+                [selectedItem runAction:[[moveEffect copy] autorelease]];
+
                 // this checking needs cleanup!
                 break;            
             } else {
@@ -477,6 +527,21 @@ BOOL res[5];
     }
 }
 // END CHANGED GESTURE CODE
+
+- (void)tick:(ccTime)dt {
+    gameTimer++;
+    NSLog(@"Ticking tick tick");
+    int totalMins = gameTimer/60;
+    int totalSecs = gameTimer-(totalMins*60);
+    if (totalSecs < 10) {
+        [timerLabel setString:[NSString stringWithFormat:@"%d:0%d",totalMins,totalSecs]];
+    } else {
+        [timerLabel setString:[NSString stringWithFormat:@"%d:%d",totalMins,totalSecs]];
+    }
+    
+   // timeElapsed = ticker/frameRate;
+}
+
 
 // on "dealloc" you need to release all your retained objects
 - (void) dealloc

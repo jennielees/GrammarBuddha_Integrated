@@ -21,6 +21,10 @@
     CCSprite *selectedItem;
     int completedSent;
     CGPoint orgPos;
+    int totalScore;
+    int gameTimer;
+    CCLabelTTF *scoreLabel;
+    CCLabelTTF *timerLabel;
     
     // -- for swiping
     CGPoint firstTouch;
