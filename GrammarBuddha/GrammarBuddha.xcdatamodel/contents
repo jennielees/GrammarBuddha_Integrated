@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1170" systemVersion="11D50" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Correction" representedClassName="Correction" syncable="YES">
+        <relationship name="correctionWords" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CorrectionWord" inverseName="correction" inverseEntity="CorrectionWord" syncable="YES"/>
+        <relationship name="grammarQuestions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="GrammarQuestion" inverseName="correction" inverseEntity="GrammarQuestion" syncable="YES"/>
+    </entity>
+    <entity name="CorrectionWord" representedClassName="CorrectionWord" syncable="YES">
+        <attribute name="kind" attributeType="Integer 32" maxValueString="3" defaultValueString="1" indexed="YES" syncable="YES"/>
+        <attribute name="word" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="correction" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Correction" inverseName="correctionWords" inverseEntity="Correction" syncable="YES"/>
+    </entity>
+    <entity name="GrammarQuestion" representedClassName="GrammarQuestion" syncable="YES">
+        <attribute name="code" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <attribute name="codeID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="grammarQuestionID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="sentence" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="subgroup" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="subgroupID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="usable" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <relationship name="correction" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Correction" inverseName="grammarQuestions" inverseEntity="Correction" syncable="YES"/>
+        <relationship name="quizQuestions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="QuizQuestion" inverseName="grammarQuestion" inverseEntity="QuizQuestion" syncable="YES"/>
+    </entity>
+    <entity name="Quiz" representedClassName="Quiz" syncable="YES">
+        <attribute name="finishedAt" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="secondsRemaining" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="startedAt" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="quizQuestions" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="QuizQuestion" inverseName="quiz" inverseEntity="QuizQuestion" syncable="YES"/>
+    </entity>
+    <entity name="QuizQuestion" representedClassName="QuizQuestion" syncable="YES">
+        <attribute name="answer" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="answeredAt" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="correctlyAnswered" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="createdAt" attributeType="Date" syncable="YES"/>
+        <attribute name="order" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="grammarQuestion" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GrammarQuestion" inverseName="quizQuestions" inverseEntity="GrammarQuestion" syncable="YES"/>
+        <relationship name="quiz" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Quiz" inverseName="quizQuestions" inverseEntity="Quiz" syncable="YES"/>
+    </entity>
+    <entity name="RelevantTerm" representedClassName="RelevantTerm" syncable="YES">
+        <attribute name="gender" attributeType="Integer 32" maxValueString="2" defaultValueString="1" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Correction" positionX="160" positionY="192" width="128" height="75"/>
+        <element name="CorrectionWord" positionX="160" positionY="192" width="128" height="90"/>
+        <element name="GrammarQuestion" positionX="160" positionY="192" width="128" height="180"/>
+        <element name="Quiz" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="QuizQuestion" positionX="160" positionY="192" width="128" height="165"/>
+        <element name="RelevantTerm" positionX="160" positionY="192" width="128" height="75"/>
+    </elements>
+</model>

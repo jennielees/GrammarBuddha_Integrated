@@ -19,6 +19,19 @@
 #define kGameAutorotationCCDirector 1
 #define kGameAutorotationUIViewController 2
 
+extern BOOL res[5];
+
+
+#define SENTENCES_NUM   5
+#define COMMAS_NUM  3
+static const NSString *sentenceList[SENTENCES_NUM] = {
+    @"I wish that my aunt and uncle would let me hang out with Captain Monty more",
+    @"Nicholas Dawson stormed out of the room, taking his basketball with him.", 
+    @"Bob Memari was very hungry, but he wasn't willing to eat the stale brownies in the kitchen.", 
+    @"Libby Corbin-Bates is going to dance until her legs completely give out on her.", 
+    @"Francine Smith or her father might know what happened to the donuts.", 
+};
+
 //
 // Define here the type of autorotation that you want for your game
 //
