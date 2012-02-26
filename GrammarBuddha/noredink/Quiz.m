@@ -25,16 +25,24 @@
 - (QuizQuestion*) appendNewQuizQuestion:(NSError**)error {
     // Grab a list of questions currently used
     
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"QuizQuestion"];
+    /* We're only going to limit to questions not used in this quiz since during demo we want 
+     the same questions to be seen more than once so the quiz can be built more than once
+     
+     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"QuizQuestion"];
+     
+     
+     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:error];
+     NSMutableArray *listOfIDs = [NSMutableArray array];
+     [results enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+     [listOfIDs addObject:[[((QuizQuestion*)obj) grammarQuestion] grammarQuestionID]];
+     }];*/
     
-    
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:error];
     NSMutableArray *listOfIDs = [NSMutableArray array];
-    [results enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    [self.quizQuestions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [listOfIDs addObject:[[((QuizQuestion*)obj) grammarQuestion] grammarQuestionID]];
     }];
     
-    request = [NSFetchRequest fetchRequestWithEntityName:@"GrammarQuestion"];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GrammarQuestion"];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"NOT (grammarQuestionID in %@) AND usable = %@", listOfIDs, [NSNumber numberWithBool:YES]];
     [request setPredicate:predicate];
     
@@ -48,7 +56,7 @@
     request.fetchLimit = 1;
     request.fetchOffset = arc4random() % remainingQuestions;
     
-    results = [self.managedObjectContext executeFetchRequest:request error:error];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:error];
     GrammarQuestion *grammarQuestion = [results objectAtIndex:0];
     QuizQuestion *quizQuestion = [[QuizQuestion alloc] initWithEntity:
                                   [NSEntityDescription entityForName:@"QuizQuestion" inManagedObjectContext:self.managedObjectContext] 
