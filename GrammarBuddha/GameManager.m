@@ -19,6 +19,8 @@ static GameManager* _sharedGameManager = nil; // define the singleton object
 @synthesize isSoundEffectsON;
 @synthesize hasPlayerDied;
 @synthesize selectedCategories;//plus custom getter setter
+@synthesize latestScore;
+@synthesize isMultiplayerON;
 
 + (GameManager*) sharedGameManager {
 

@@ -9,6 +9,8 @@
 #import "Result.h"
 #import "GameConfig.h"
 #import "MainMenuLayer.h"
+#import "GameManager.h"
+
 @implementation Result
 +(CCScene *) scene
 {
@@ -45,9 +47,17 @@
         [self addChild:menu];
          */
         CGSize screenSize = [CCDirector sharedDirector].winSize;		
-		CCSprite *background = [CCSprite spriteWithFile:@"victoryScreen.png"];
-		[background setPosition:ccp(screenSize.width/2, screenSize.height/2)];
-		[self addChild:background];
+		CCMenuItemImage *background = [CCMenuItemImage itemFromNormalImage:@"victoryScreen.png" selectedImage:@"victoryScreen.png" target:self selector:@selector(goMenu)];
+		[background setPosition:ccp(0, 0)];
+		//[self addChild:background];
+        CCMenu *menu = [CCMenu menuWithItems:background, nil];
+        [self addChild:menu];
+        
+        int score = [GameManager sharedGameManager].latestScore;
+        CCLabelTTF *label = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",score ] fontName:@"lastninja" fontSize:50];
+        label.position = ccp(screenSize.width/2, screenSize.height/2-20);
+        label.color = ccRED;
+        [self addChild:label];
         
         
     }

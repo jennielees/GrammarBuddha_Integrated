@@ -13,6 +13,8 @@
 #import "GameConfig.h"
 #import "Result.h"
 #import "MainMenuLayer.h"
+#import "GameManager.h"
+
 static const CGPoint comPos[3] = {
     {200, 200}, {400, 200}, {600, 200},
 };
@@ -82,6 +84,8 @@ BOOL res[5];
             
         }
     }
+    id delay = [CCDelayTime actionWithDuration: 1.0f];
+    [[sentWordList objectAtIndex:0] runAction:[[delay copy] autorelease]];
 }
 
 -(void) displaySentence {
@@ -214,11 +218,18 @@ BOOL res[5];
         scoreLabel.position = ccp((winSize.width-260), (winSize.height-60));
         [self addChild:scoreLabel z:55];
         
+        gameTimer=0;
+        totalScore = 0;
         
         
         [self schedule:@selector(tick:) interval:1];//using zero for the interval will just sync us with the default refresh, usually every 1/60 second
 
-        
+        if ([GameManager sharedGameManager].isMultiplayerON) {
+            // Put the multiplayer assets up too.
+            
+            
+            
+        }
         
         self.isTouchEnabled = YES;
 	}
@@ -367,6 +378,7 @@ BOOL res[5];
     [[SimpleAudioEngine sharedEngine] playEffect:sound];
 }
 -(void) gotoResult {
+    [GameManager sharedGameManager].latestScore = totalScore;  
     [[CCDirector sharedDirector] replaceScene:[Result scene]];
 }
 -(void) playResult:(CCSprite *) result {
@@ -444,6 +456,9 @@ BOOL res[5];
         // Call next Sentence
         NSLog(@"Detected a swipe over 200");
        
+        id delay = [CCDelayTime actionWithDuration: 2];
+        [self runAction:delay];
+
         [self checkSentenceAndIncrement:1000];
        
         for(int i = 0;i < words[count].count; i++) {
@@ -500,7 +515,8 @@ BOOL res[5];
             }
             
             if(CGRectContainsPoint(dropArea, touchLocation)) {
-                
+                id delay = [CCDelayTime actionWithDuration: 3.0f];
+                [self runAction:delay];
 
                 [self checkSentenceAndIncrement:i]; // removed into its own function
                 id moveAction = [CCMoveBy actionWithDuration:1.0f

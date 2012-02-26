@@ -102,12 +102,15 @@
 }
 
 -(void) playArcade {
+    [GameManager sharedGameManager].isMultiplayerON = NO;
     
     [[CCDirector sharedDirector] replaceScene:[Sentences scene]];
 }
 
 -(void) playChallenge {
   //  [[CCDirector sharedDirector] replaceScene:[Sentences scene]];
+    [GameManager sharedGameManager].isMultiplayerON = YES;
+
     [[GameManager sharedGameManager] runSceneWithID:kCustomScene];
     
 }

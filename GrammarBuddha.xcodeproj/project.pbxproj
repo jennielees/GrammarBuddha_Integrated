@@ -9,7 +9,9 @@
 /* Begin PBXBuildFile section */
 		C918011614FAB7310054C180 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C918011514FAB7310054C180 /* Default-Landscape~ipad.png */; };
 		C918011B14FAB8990054C180 /* GrammarBuddha.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = C918011A14FAB8990054C180 /* GrammarBuddha.xcdatamodel */; };
-		C936E2D314FAF08600A585A0 /* victoryScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C936E2D214FAF08600A585A0 /* victoryScreen.png */; };
+		C936E2D514FAF37C00A585A0 /* victoryScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C936E2D414FAF37C00A585A0 /* victoryScreen.png */; };
+		C936E2D814FAF50C00A585A0 /* flavvaBuddha.png in Resources */ = {isa = PBXBuildFile; fileRef = C936E2D614FAF50C00A585A0 /* flavvaBuddha.png */; };
+		C936E2D914FAF50C00A585A0 /* buddhaHat.png in Resources */ = {isa = PBXBuildFile; fileRef = C936E2D714FAF50C00A585A0 /* buddhaHat.png */; };
 		C95D603C14FAE2A600686980 /* bubbleDropAudio.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C95D603A14FAE2A600686980 /* bubbleDropAudio.mp3 */; };
 		C95D603D14FAE2A600686980 /* menuInitialLoad.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C95D603B14FAE2A600686980 /* menuInitialLoad.mp3 */; };
 		C95D603F14FAE58F00686980 /* badBuddha.png in Resources */ = {isa = PBXBuildFile; fileRef = C95D603E14FAE58F00686980 /* badBuddha.png */; };
@@ -216,7 +218,9 @@
 		C918011F14FABCC70054C180 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		C918012014FABCC80054C180 /* GameManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
 		C918012114FABCC90054C180 /* GameManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameManager.m; sourceTree = "<group>"; };
-		C936E2D214FAF08600A585A0 /* victoryScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = victoryScreen.png; path = ../../victoryScreen.png; sourceTree = "<group>"; };
+		C936E2D414FAF37C00A585A0 /* victoryScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = victoryScreen.png; sourceTree = "<group>"; };
+		C936E2D614FAF50C00A585A0 /* flavvaBuddha.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flavvaBuddha.png; sourceTree = "<group>"; };
+		C936E2D714FAF50C00A585A0 /* buddhaHat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buddhaHat.png; sourceTree = "<group>"; };
 		C95D603A14FAE2A600686980 /* bubbleDropAudio.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bubbleDropAudio.mp3; sourceTree = "<group>"; };
 		C95D603B14FAE2A600686980 /* menuInitialLoad.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = menuInitialLoad.mp3; sourceTree = "<group>"; };
 		C95D603E14FAE58F00686980 /* badBuddha.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = badBuddha.png; sourceTree = "<group>"; };
@@ -688,9 +692,11 @@
 		FE43C8AD14FA526C005AC924 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C936E2D214FAF08600A585A0 /* victoryScreen.png */,
 				C95D604014FAE66500686980 /* badassBuddha.png */,
+				C936E2D614FAF50C00A585A0 /* flavvaBuddha.png */,
+				C936E2D714FAF50C00A585A0 /* buddhaHat.png */,
 				C95D604114FAE66500686980 /* badScoreCloud.png */,
+				C936E2D414FAF37C00A585A0 /* victoryScreen.png */,
 				C95D604214FAE66500686980 /* buddhaIcon.png */,
 				C95D604314FAE66500686980 /* commaBubble.png */,
 				C95D604414FAE66500686980 /* commaPoof.png */,
@@ -1235,7 +1241,9 @@
 				C95D605614FAE66500686980 /* semiPoof.png in Resources */,
 				C95D605714FAE66500686980 /* timerBack.png in Resources */,
 				C95D605914FAEBB500686980 /* buddhaIcon.png in Resources */,
-				C936E2D314FAF08600A585A0 /* victoryScreen.png in Resources */,
+				C936E2D514FAF37C00A585A0 /* victoryScreen.png in Resources */,
+				C936E2D814FAF50C00A585A0 /* flavvaBuddha.png in Resources */,
+				C936E2D914FAF50C00A585A0 /* buddhaHat.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

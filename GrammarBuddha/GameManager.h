@@ -13,6 +13,8 @@
 	BOOL isMusicON;
 	BOOL isSoundEffectsON;
 	BOOL hasPlayerDied;
+    BOOL isMultiplayerON;
+    int latestScore;
 	SceneTypes currentScene;
     NSMutableSet *selectedCategories;
 }
@@ -20,6 +22,8 @@
 @property (readwrite) BOOL isMusicON;
 @property (readwrite) BOOL isSoundEffectsON;
 @property (readwrite) BOOL hasPlayerDied;
+@property (readwrite) BOOL isMultiplayerON;
+@property (readwrite) int latestScore;
 @property (readwrite, retain) NSSet *selectedCategories;
 
 + (GameManager*) sharedGameManager; // Class method returning one and only (singleton) instance of GameManager
