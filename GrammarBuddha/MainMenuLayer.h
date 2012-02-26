@@ -11,7 +11,6 @@
 
 @interface MainMenuLayer : CCLayer {
     CCMenu *mainMenu;
-
 }
 +(CCScene *) scene;
 @end

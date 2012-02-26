@@ -7,7 +7,6 @@
 //
 
 #import "CustomCCNode.h"
-#import "cocos2d.h"
 
 @implementation CustomCCNode
 

@@ -7,13 +7,9 @@
 //
 
 #import "GameManager.h"
-#import "MainMenuScene.h"
-#import "ArcadeScene.h"
+#import "MainMenuLayer.h"
 #import "SelectScene.h"
-//#import "OptionsScene.h" // maybe remove
-//#import "CreditsScene.h"  // maybe remove
-//#import "IntroScene.h"
-//#import "LevelCompleteScene.h"
+#import "Sentences.h"
 
 @implementation GameManager
 
@@ -86,10 +82,10 @@ static GameManager* _sharedGameManager = nil; // define the singleton object
 	
 	switch(sceneID) {
 		case kMainMenuScene:
-			sceneToRun = [MainMenuScene node];
+			sceneToRun = [MainMenuLayer scene];
 			break;
         case kArcadeScene:
-            sceneToRun = [ArcadeScene node];
+            sceneToRun = [Sentences scene];
             break;
         case kCustomScene:
             sceneToRun = [SelectScene node];
@@ -97,7 +93,6 @@ static GameManager* _sharedGameManager = nil; // define the singleton object
 //		case kIntroScene:
 //			sceneToRun = [IntroScene node];
 //			break;
-		// I've been lazy here - omitting unimplemented scenes to get to bonus Box2D scene faster.
 
 		default:
 			CCLOG(@"Cannot switch to unknown ID");

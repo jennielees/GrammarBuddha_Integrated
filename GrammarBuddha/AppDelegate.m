@@ -10,10 +10,10 @@
 
 #import "AppDelegate.h"
 #import "GameConfig.h"
-#import "HelloWorldLayer.h"
-#import "MainMenuLayer.h"
+//#import "MainMenuLayer.h"
 #import "RootViewController.h"
 
+#import "GameManager.h"
 
 // Remove these
 #import "NoRedInkHTTPClient.h"
@@ -150,7 +150,9 @@
     }
 */
 	// Run the intro Scene
-	[[CCDirector sharedDirector] runWithScene: [MainMenuLayer scene]];
+    [[GameManager sharedGameManager] runSceneWithID:kMainMenuScene];
+
+//	[[CCDirector sharedDirector] runWithScene: [MainMenuLayer scene]];
 }
 
 

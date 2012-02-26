@@ -148,7 +148,7 @@
     self.isTouchEnabled = YES;
     
     // Title
-    CCLabelTTF *titleLabel = [CCLabelTTF labelWithString:@"Pick your category" fontName:@"Last Ninja" fontSize:42];
+    CCLabelTTF *titleLabel = [CCLabelTTF labelWithString:@"Pick your category" fontName:@"lastninja" fontSize:42];
     titleLabel.position = ccp(screenSize.width/2, (screenSize.height*0.9f+500));
     
     id moveVerticalAction = [CCMoveBy actionWithDuration:1.0f
@@ -159,7 +159,7 @@
     [self addChild:titleLabel];
     
     
-    CCLabelTTF *continueLabel = [CCLabelTTF labelWithString:@"Go!" fontName:@"Last Ninja" fontSize:60];
+    CCLabelTTF *continueLabel = [CCLabelTTF labelWithString:@"Go!" fontName:@"lastninja" fontSize:60];
     CCMenuItemLabel *continueButtonLabel = [CCMenuItemLabel itemWithLabel:continueLabel target:self selector:@selector(continueGame)];
     //titleLabel.position = ccp(screenSize.width/2, screenSize.height*0.9f);
     //[self addChild:titleLabel];

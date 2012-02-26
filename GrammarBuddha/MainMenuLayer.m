@@ -9,6 +9,7 @@
 #import "MainMenuLayer.h"
 #import "sentences.h"
 #import "SimpleAudioEngine.h"
+#import "GameManager.h"
 
 @interface MainMenuLayer() // slight hack to do private methods
 -(void)displayMainMenu;
@@ -32,6 +33,18 @@
 }
 
 
+-(void)playScene:(CCMenuItemFont*)itemPassedIn {
+    
+	if ([itemPassedIn tag] == 1) {
+		CCLOG(@"Tag 1 found, Scene 1");
+		//[[GameManager sharedGameManager] runSceneWithID:kIntroScene]; // poss remove
+	} else {
+		CCLOG(@"Tag was: %d", [itemPassedIn tag]);
+		CCLOG(@"Placeholder for next chapters");
+		
+	}
+}
+
 -(void)displayMainMenu {
     
 	CGSize screenSize = [CCDirector sharedDirector].winSize;
@@ -50,7 +63,7 @@
                                         selectedImage:@"challengeBtn.png"
                                         disabledImage:nil
                                         target:self
-                                        selector:@selector(customUser)];
+                                        selector:@selector(playChallenge)];
     
     CCMenuItemImage *practiceButton = [CCMenuItemImage
                                        itemFromNormalImage:@"practiceBtn.png"
@@ -94,15 +107,17 @@
 }
 
 -(void) playChallenge {
-   // [[GameManager sharedGameManager] runSceneWithID:kChallengeScene];
+  //  [[CCDirector sharedDirector] replaceScene:[Sentences scene]];
+    [[GameManager sharedGameManager] runSceneWithID:kCustomScene];
+    
 }
 
 -(void) playPractice {
-  //  [[GameManager sharedGameManager] runSceneWithID:kPracticeScene];
+    //[[GameManager sharedGameManager] runSceneWithID:kPracticeScene];
 }
 
 -(void) customUser {
-   // [[GameManager sharedGameManager] runSceneWithID:kCustomScene];
+    [[GameManager sharedGameManager] runSceneWithID:kCustomScene];
 }
 
 -(id)init {

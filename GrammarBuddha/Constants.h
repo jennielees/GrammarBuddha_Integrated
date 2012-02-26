@@ -7,13 +7,6 @@
  *
  */
 
-#define kVikingSpriteZValue 100
-#define kVikingSpriteTagValue 0
-#define kVikingIdleTimer 3.0f
-#define kVikingFistDamage 10
-#define kVikingMalletDamage 40
-#define kRadarDishTagValue 10
-
 #define kMainMenuTagValue 10
 #define kSceneMenuTagValue 20
 
@@ -26,8 +19,8 @@ typedef enum {
 	kLevelCompleteScene=5,
     kCustomScene=6,
     kArcadeScene=101,
-    kChallengeScene=101,
-    kPracticeScene=101,
+    kChallengeScene=102,
+    kPracticeScene=103,
 	kGameLevel1=101,
 	kGameLevel2=102,
 	kGameLevel3=103,
