@@ -16,6 +16,7 @@
 @dynamic answer;
 @dynamic correctlyAnswered;
 @dynamic answeredAt;
+@dynamic createdAt;
 @dynamic order;
 @dynamic grammarQuestion;
 @dynamic quiz;

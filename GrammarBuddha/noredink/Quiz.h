@@ -19,7 +19,10 @@
 @property (nonatomic, retain) NSOrderedSet *quizQuestions;
 
 - (QuizQuestion*) appendNewQuizQuestionWithError:(NSError**)error;
-
+- (QuizQuestion*) appendNewQuizQuestion:(NSError**)error;
+- (NSUInteger) numberOfQuestionsAnsweredCorrectly;
+- (NSUInteger) numberOfQuestionsAnsweredIncorrectly;
+- (NSUInteger) numberOfQuestionsAnswered;
 @end
 
 @interface Quiz (CoreDataGeneratedAccessors)
