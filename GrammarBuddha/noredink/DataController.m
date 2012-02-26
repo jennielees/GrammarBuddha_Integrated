@@ -97,6 +97,12 @@ static DataController *sDataController;
     return [self.managedObjectContext executeFetchRequest:request error:&error];
 }
 
+- (void) clearRelevantTerms:(NSError**)error {
+    [[self relevantTerms] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [self.managedObjectContext deleteObject:obj];
+    }];
+}
+
 #pragma mark - Object creation helpers
 - (Quiz*) createQuiz {
     Quiz *quiz = [[Quiz alloc] initWithEntity:
