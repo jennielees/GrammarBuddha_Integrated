@@ -17,7 +17,12 @@
 @dynamic secondsRemaining;
 @dynamic quizQuestions;
 
+// Leaving this function for now, but it shouldn't be used as the name didn't fit right
 - (QuizQuestion*) appendNewQuizQuestionWithError:(NSError**)error {
+    return [self appendNewQuizQuestion:error];
+}
+
+- (QuizQuestion*) appendNewQuizQuestion:(NSError**)error {
     // Grab a list of questions currently not within this quiz
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"QuizQuestion"];
     
@@ -49,11 +54,46 @@
                                        insertIntoManagedObjectContext:self.managedObjectContext];
     
     quizQuestion.grammarQuestion = grammarQuestion;
+    quizQuestion.createdAt = [NSDate date];
     
     [self addQuizQuestionsObject:quizQuestion];
     
     return quizQuestion;
 }
+
+- (NSUInteger) numberOfQuestionsAnsweredCorrectly {
+    __block NSUInteger answeredCorrectly = 0;
+    [self.quizQuestions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        QuizQuestion *quizQuestion = obj;
+        if (quizQuestion.isAnswered && quizQuestion.isCorrectlyAnswered)
+            answeredCorrectly++;
+    }];
+    
+    return answeredCorrectly;
+}
+
+- (NSUInteger) numberOfQuestionsAnsweredIncorrectly {
+    __block NSUInteger answeredIncorrectly = 0;
+    [self.quizQuestions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        QuizQuestion *quizQuestion = obj;
+        if (quizQuestion.isAnswered && !quizQuestion.isCorrectlyAnswered)
+            answeredIncorrectly++;
+    }];
+    
+    return answeredIncorrectly;
+}
+
+- (NSUInteger) numberOfQuestionsAnswered {
+    __block NSUInteger answered = 0;
+    [self.quizQuestions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        QuizQuestion *quizQuestion = obj;
+        if (quizQuestion.isAnswered)
+            answered++;
+    }];
+    
+    return answered;
+}
+
 
 // REMOVE THIS AFTER APPLE FIXES BUG
 - (void)addQuizQuestionsObject:(QuizQuestion *)value {

@@ -29,6 +29,8 @@
 - (NSArray*) grammarQuestions;
 - (NSArray*) relevantTerms;
 
+- (void) clearRelevantTerms:(NSError**)error;
+
 - (GrammarQuestion*) createGrammarQuestionFromDict:(NSDictionary*)dict;
 - (Quiz*) createQuiz;
 - (RelevantTerm*) createRelevantTermWithName:(NSString*)name gender:(RelevantTermGender)gender;

@@ -16,6 +16,7 @@
 @property (nonatomic, retain) NSString * answer;
 @property (nonatomic, retain) NSNumber * correctlyAnswered;
 @property (nonatomic, retain) NSDate * answeredAt;
+@property (nonatomic, retain) NSDate * createdAt;
 @property (nonatomic, retain) NSNumber * order;
 @property (nonatomic, retain) GrammarQuestion *grammarQuestion;
 @property (nonatomic, retain) Quiz *quiz;
