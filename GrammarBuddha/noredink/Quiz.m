@@ -23,7 +23,8 @@
 }
 
 - (QuizQuestion*) appendNewQuizQuestion:(NSError**)error {
-    // Grab a list of questions currently not within this quiz
+    // Grab a list of questions currently used
+    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"QuizQuestion"];
     
     
@@ -40,8 +41,8 @@
     NSUInteger remainingQuestions = [self.managedObjectContext countForFetchRequest:request error:error];
     
     if (remainingQuestions == 0) {
-        *error = [NSError errorWithDomain:@"NotEnoughQuestions" code:1 userInfo:nil];
-        return nil;;
+        *error = [[NSError errorWithDomain:@"NotEnoughQuestions" code:1 userInfo:nil] autorelease];
+        return nil;
     }
     
     request.fetchLimit = 1;
@@ -57,6 +58,7 @@
     quizQuestion.createdAt = [NSDate date];
     
     [self addQuizQuestionsObject:quizQuestion];
+    *error = nil;
     
     return quizQuestion;
 }

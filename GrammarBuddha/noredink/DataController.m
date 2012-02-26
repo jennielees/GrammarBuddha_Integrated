@@ -103,6 +103,26 @@ static DataController *sDataController;
     }];
 }
 
+- (NSUInteger) numberOfUnusedGrammarQuestions {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"QuizQuestion"];
+    
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    NSMutableArray *listOfIDs = [NSMutableArray array];
+    [results enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [listOfIDs addObject:[[((QuizQuestion*)obj) grammarQuestion] grammarQuestionID]];
+    }];
+    
+    request = [NSFetchRequest fetchRequestWithEntityName:@"GrammarQuestion"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"NOT (grammarQuestionID in %@) AND usable = %@", listOfIDs, [NSNumber numberWithBool:YES]];
+    [request setPredicate:predicate];
+    
+    NSUInteger remainingQuestions = [self.managedObjectContext countForFetchRequest:request error:&error];
+    
+    return remainingQuestions; 
+}
+
+
 #pragma mark - Object creation helpers
 - (Quiz*) createQuiz {
     Quiz *quiz = [[Quiz alloc] initWithEntity:
@@ -111,6 +131,27 @@ static DataController *sDataController;
     
     return quiz;
 }
+
+- (Quiz*) createQuizWithQuestions:(NSUInteger)numberOfQuestions error:(NSError**)error {
+    if ([self numberOfUnusedGrammarQuestions] < numberOfQuestions) {
+        *error = [[NSError errorWithDomain:@"NotEnoughQuestions" code:1 userInfo:nil] autorelease];
+        
+        return nil;   
+    }
+    
+    Quiz *quiz = [self createQuiz];
+    for (NSUInteger i = 0; i != numberOfQuestions; i++) {
+        [quiz appendNewQuizQuestion:error];
+        
+        if (*error != nil) {
+            return nil;
+        }
+        
+    }
+    *error = nil;
+    return quiz;
+}
+
 - (RelevantTerm*) createRelevantTermWithName:(NSString*)name gender:(RelevantTermGender)gender {
     RelevantTerm *relevantTerm = [[RelevantTerm alloc] initWithEntity:
                                   [NSEntityDescription entityForName:@"RelevantTerm" inManagedObjectContext:self.managedObjectContext] 
@@ -188,7 +229,7 @@ static DataController *sDataController;
     
     if (remainingQuestions == 0) {
         *error = [NSError errorWithDomain:@"NotEnoughQuestions" code:1 userInfo:nil];
-        return nil;;
+        return nil;
     }
     
     request.fetchLimit = 1;

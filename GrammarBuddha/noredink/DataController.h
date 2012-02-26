@@ -25,6 +25,8 @@
 
 - (void) markAllGrammarQuestionsUnusable;
 - (NSUInteger) numberOfGrammarQuestions;
+- (NSUInteger) numberOfUnusedGrammarQuestions;
+
 - (NSUInteger) numberOfRelevantTerms;
 - (NSArray*) grammarQuestions;
 - (NSArray*) relevantTerms;
@@ -33,6 +35,7 @@
 
 - (GrammarQuestion*) createGrammarQuestionFromDict:(NSDictionary*)dict;
 - (Quiz*) createQuiz;
+- (Quiz*) createQuizWithQuestions:(NSUInteger)numberOfQuestions error:(NSError**)error;
 - (RelevantTerm*) createRelevantTermWithName:(NSString*)name gender:(RelevantTermGender)gender;
 - (QuizQuestion*) appendNewQuizQuestionInQuiz:(Quiz*)quiz error:(NSError**)error;
 
