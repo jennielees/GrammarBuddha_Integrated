@@ -35,6 +35,8 @@ BOOL res[5];
 	// return the scene
 	return scene;
 }
+
+
 -(void)  repostionSentence:(int)index {
     int i = 0;
     int x = 100;
@@ -87,6 +89,11 @@ BOOL res[5];
     float hightIndex[3] = {0.7, 0.4, 0.25};
     int i = 0;
     int x = 0;
+    
+    id moveAction = [CCMoveBy actionWithDuration:1.0f
+                                        position:ccp(1500, 0)];
+    id moveEffect = [CCEaseIn actionWithAction:moveAction rate:0.8f];
+    
     for(int j = 0; j < words[count].count; j++) {
         CCLabelTTF *word = [CCLabelTTF labelWithString:[words[count] objectAtIndex:j] fontName:@"Arial" fontSize:fontSize];
         word.color = ccBLACK;
@@ -101,14 +108,21 @@ BOOL res[5];
             x = 100;
             i++;
         }
-        word.position  = ccp(x+sentenceBox.position.x-sentenceBox.contentSize.width/2, sentenceBox.position.y-sentenceBox.contentSize.height/2+sentenceBox.contentSize.height*hightIndex[i]);
+        word.position  = ccp((x+sentenceBox.position.x-sentenceBox.contentSize.width/2-1500), sentenceBox.position.y-sentenceBox.contentSize.height/2+sentenceBox.contentSize.height*hightIndex[i]);
         //NSLog(@"hight %d = %f", i, sentenceBox.contentSize.height*hightIndex[i]);
         word.color = ccBLACK;
+        
+        // ANIMATE CODE
+        [word runAction:[[moveEffect copy] autorelease]];
+        NSLog(@"Ran move effect");
+
+        
         [self addChild:word];
         [sentWordList addObject:word];
         //[sentenceBox addChild:word z:1 tag:j];
     }
 }
+
 -(void) setupCommas {
     NSString *f[4] = {
       @"bubble1.png", @"bubble2.png", @"bubble3.png", @"bubble4.png",  
@@ -253,21 +267,28 @@ BOOL res[5];
     }
     return selected;
 }
+
+// BEGIN CHANGED GESTURE CODE
+
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {    
-	BOOL tc = NO;
     CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
-    for(int i = 0; i < words[count].count; i++) {
-        CCLabelTTF *word = (CCLabelTTF*) [sentWordList objectAtIndex:i];
-        if(CGRectContainsPoint(word.boundingBox, touchLocation)) {
-            word.color = ccRED;
-            [self performSelector:@selector(changeBlack:) withObject:word afterDelay:0.8];
-            break;
-        }
-    } 
+    
+    firstTouch = touchLocation;
+    
+    // Is it a sprite?
+	BOOL tc = NO;
     if([self selectSpriteForTouch:touch]) 
         tc = YES;
+    
+    // Ok, are we selecting a word or swiping in the word area?
+    if (firstTouch.y > 300 && firstTouch.y < 500) {
+        tc = YES; // continue to logic in the next part to figure out quite what we did
+        selectedItem = nil; // A wee hack to deselect any 'floating' punctuation
+    }
     return tc;
 }
+// END CHANGED GESTURE CODE
+
 
 - (void)panForTranslation:(CGPoint)translation {    
     if (selectedItem && selectedItem.tag != 888) {
@@ -286,6 +307,7 @@ BOOL res[5];
     CGPoint translation = ccpSub(touchLocation, oldTouchLocation);    
     [self panForTranslation:translation];   
 }
+
 -(BOOL) check:(int) index {
     BOOL right = NO;
     CCLabelTTF *word1  = (CCLabelTTF*) [sentWordList objectAtIndex:index];
@@ -319,7 +341,7 @@ BOOL res[5];
     [[CCDirector sharedDirector] replaceScene:[Result scene]];
 }
 -(void) playResult:(CCSprite *) result {
-    [[SimpleAudioEngine sharedEngine] playEffect:@"rightSound.mp3"];
+    [[SimpleAudioEngine sharedEngine] playEffect:@"bubbleDropAudio.mp3"];
     CGSize winSize = [CCDirector sharedDirector].winSize;
 
     id rotate = [CCRotateBy actionWithDuration:1 angle:-50];
@@ -336,13 +358,91 @@ BOOL res[5];
     if(completedSent==SENTENCES_NUM) {
         [self performSelector:@selector(gotoResult) withObject:nil afterDelay:4];
     } else {
-        [self performSelector:@selector(goSentences2) withObject:nil afterDelay:4];
+        
+        [self performSelector:@selector(goSentences2) withObject:nil afterDelay:3];
     }
 }
--(void) ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event {
+// BEGIN CHANGED GESTURE CODE
+// This removed from touch and made into its own function.
+-(void) checkSentenceAndIncrement:(int) i {
     BOOL right = NO;
+    NSLog(@"CHECK");
+    // was punc added?
+    if (selectedItem) {
+        
+        selectedItem.tag = 888;
+        CCSprite *b = (CCSprite*) [selectedItem getChildByTag:8];
+        assert(b);
+        [b setVisible:NO];
+        [self repostionSentence:i];
+    }
+    right = YES;
+    // should check the right or wrong
+    res[completedSent] = TRUE;
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    CCSprite *rightSprite = [CCSprite spriteWithFile:@"right.png"];
+    rightSprite.position = ccp(winSize.height/2, winSize.width/2);
+    [self addChild:rightSprite z:20000];
+    [self performSelector:@selector(playResult:) withObject:rightSprite afterDelay:1];
+    completedSent++;
+    buddha.scaleX=0.6 + completedSent*0.1;
+    buddha.scaleY=0.6 + completedSent*0.1;
+
+}
+
+-(void) ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
 
+    lastTouch = touchLocation;
+    
+    // Is it a swipe?
+    
+    //Minimum length of the swipe
+    float swipeLength = ccpDistance(firstTouch, lastTouch);
+    NSLog(@"Swipe length: %f", swipeLength);
+    //Check if the swipe is a left swipe and long enough
+    NSLog(@"firstTouch.y: %f", firstTouch.y);
+    NSLog(@"firstTouch.y: %f", firstTouch.x);
+    NSLog(@"lastTouch.y: %f", lastTouch.x);
+    NSLog(@"lastTouch.y: %f", lastTouch.y);
+    
+    if (firstTouch.y < 500 && firstTouch.y > 300 && firstTouch.x > lastTouch.x && swipeLength > 200) {
+        // Call next Sentence
+        NSLog(@"Detected a swipe over 200");
+       
+        [self checkSentenceAndIncrement:1000];
+       
+        for(int i = 0;i < words[count].count; i++) {
+            CCLabelTTF *word1 = [sentWordList objectAtIndex:i];
+            
+            // ANIMATE CODE
+            id moveAction = [CCMoveBy actionWithDuration:1.0f
+                                                position:ccp(-1500, 0)];
+            id moveEffect = [CCEaseIn actionWithAction:moveAction rate:0.8f];
+            [word1 runAction:[[moveEffect copy] autorelease]];
+            NSLog(@"Ran move effect");
+                     
+         }
+        
+        
+        return;
+    } 
+    
+    NSLog(@"It's not a swipe");
+        // If not -- is it a word?
+        
+    for(int i = 0; i < words[count].count; i++) {
+        CCLabelTTF *word = (CCLabelTTF*) [sentWordList objectAtIndex:i];
+        if(CGRectContainsPoint(word.boundingBox, touchLocation)) {
+            word.color = ccRED;
+            [self performSelector:@selector(changeBlack:) withObject:word afterDelay:0.8];
+            break;
+        }
+    } 
+     // end is it a word?
+
+    
+    
     if(selectedItem) {   
         for(int i = 0;i < words[count].count; i++) {
             CCLabelTTF *word1 = [sentWordList objectAtIndex:i];
@@ -366,23 +466,9 @@ BOOL res[5];
             }
             
             if(CGRectContainsPoint(dropArea, touchLocation)) {
-                NSLog(@"RIGHT");
-                selectedItem.tag = 888;
-                right = YES;
-                CCSprite *b = (CCSprite*) [selectedItem getChildByTag:8];
-                assert(b);
-                [b setVisible:NO];
-                [self repostionSentence:i];
-                    // should check the right or wrong
-                res[completedSent] = TRUE;
-                CGSize winSize = [CCDirector sharedDirector].winSize;
-                CCSprite *right = [CCSprite spriteWithFile:@"right.png"];
-                right.position = ccp(winSize.height/2, winSize.width/2);
-                [self addChild:right z:20000];
-                [self performSelector:@selector(playResult:) withObject:right afterDelay:1];
-                completedSent++;
-                buddha.scaleX=0.6 + completedSent*0.1;
-
+           
+                [self checkSentenceAndIncrement:i]; // removed into its own function
+                // this checking needs cleanup!
                 break;            
             } else {
                 selectedItem.position = orgPos;
@@ -390,6 +476,8 @@ BOOL res[5];
          }
     }
 }
+// END CHANGED GESTURE CODE
+
 // on "dealloc" you need to release all your retained objects
 - (void) dealloc
 {

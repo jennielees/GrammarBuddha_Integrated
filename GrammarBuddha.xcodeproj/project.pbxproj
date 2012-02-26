@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		C918011614FAB7310054C180 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C918011514FAB7310054C180 /* Default-Landscape~ipad.png */; };
 		C918011B14FAB8990054C180 /* GrammarBuddha.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = C918011A14FAB8990054C180 /* GrammarBuddha.xcdatamodel */; };
+		C95D603C14FAE2A600686980 /* bubbleDropAudio.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C95D603A14FAE2A600686980 /* bubbleDropAudio.mp3 */; };
+		C95D603D14FAE2A600686980 /* menuInitialLoad.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C95D603B14FAE2A600686980 /* menuInitialLoad.mp3 */; };
 		C99333FE14FACBCF00EA1C47 /* hunger_games.png in Resources */ = {isa = PBXBuildFile; fileRef = C99333F714FACBCF00EA1C47 /* hunger_games.png */; };
 		C99333FF14FACBCF00EA1C47 /* rock.png in Resources */ = {isa = PBXBuildFile; fileRef = C99333F814FACBCF00EA1C47 /* rock.png */; };
 		C993340014FACBCF00EA1C47 /* us_presidents.png in Resources */ = {isa = PBXBuildFile; fileRef = C99333F914FACBCF00EA1C47 /* us_presidents.png */; };
@@ -199,6 +201,8 @@
 		C918011F14FABCC70054C180 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		C918012014FABCC80054C180 /* GameManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
 		C918012114FABCC90054C180 /* GameManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameManager.m; sourceTree = "<group>"; };
+		C95D603A14FAE2A600686980 /* bubbleDropAudio.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bubbleDropAudio.mp3; sourceTree = "<group>"; };
+		C95D603B14FAE2A600686980 /* menuInitialLoad.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = menuInitialLoad.mp3; sourceTree = "<group>"; };
 		C99333F714FACBCF00EA1C47 /* hunger_games.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hunger_games.png; sourceTree = "<group>"; };
 		C99333F814FACBCF00EA1C47 /* rock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rock.png; sourceTree = "<group>"; };
 		C99333F914FACBCF00EA1C47 /* us_presidents.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = us_presidents.png; sourceTree = "<group>"; };
@@ -653,6 +657,8 @@
 		FE43C8AD14FA526C005AC924 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C95D603A14FAE2A600686980 /* bubbleDropAudio.mp3 */,
+				C95D603B14FAE2A600686980 /* menuInitialLoad.mp3 */,
 				C918011A14FAB8990054C180 /* GrammarBuddha.xcdatamodel */,
 				C993340514FACC4300EA1C47 /* hp200.png */,
 				C993340614FACC4300EA1C47 /* twilight200.png */,
@@ -1168,6 +1174,8 @@
 				C993340C14FACC4300EA1C47 /* glee200locked.png in Resources */,
 				C993341014FACC9200EA1C47 /* lastninja.ttf in Resources */,
 				C993341114FACC9200EA1C47 /* Readme.txt in Resources */,
+				C95D603C14FAE2A600686980 /* bubbleDropAudio.mp3 in Resources */,
+				C95D603D14FAE2A600686980 /* menuInitialLoad.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

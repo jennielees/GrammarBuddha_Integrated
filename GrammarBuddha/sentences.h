@@ -21,6 +21,11 @@
     CCSprite *selectedItem;
     int completedSent;
     CGPoint orgPos;
+    
+    // -- for swiping
+    CGPoint firstTouch;
+    CGPoint lastTouch;
+    // -- end for swiping
 }
 
 // returns a CCScene that contains the HelloWorldLayer as the only child

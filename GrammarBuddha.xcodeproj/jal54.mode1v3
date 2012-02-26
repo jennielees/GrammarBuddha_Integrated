@@ -275,7 +275,7 @@
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 0}, {186, 445}}</string>
+							<string>{{0, 0}, {186, 613}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -287,14 +287,14 @@
 					<key>GeometryConfiguration</key>
 					<dict>
 						<key>Frame</key>
-						<string>{{0, 0}, {203, 463}}</string>
+						<string>{{0, 0}, {203, 631}}</string>
 						<key>GroupTreeTableConfiguration</key>
 						<array>
 							<string>MainColumn</string>
 							<real>186</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>289 196 788 504 0 0 1366 746 </string>
+						<string>26 74 1076 672 0 0 1366 746 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -329,14 +329,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {580, 277}}</string>
+								<string>{{0, 0}, {868, 437}}</string>
 								<key>RubberWindowFrame</key>
-								<string>289 196 788 504 0 0 1366 746 </string>
+								<string>26 74 1076 672 0 0 1366 746 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>277pt</string>
+							<string>437pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -349,18 +349,18 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 282}, {580, 181}}</string>
+								<string>{{0, 442}, {868, 189}}</string>
 								<key>RubberWindowFrame</key>
-								<string>289 196 788 504 0 0 1366 746 </string>
+								<string>26 74 1076 672 0 0 1366 746 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>181pt</string>
+							<string>189pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
-					<string>580pt</string>
+					<string>868pt</string>
 				</dict>
 			</array>
 			<key>Name</key>
@@ -375,9 +375,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>C947D12314FACA100056A180</string>
+				<string>C977DC7214FADF9500A40096</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>C947D12414FACA100056A180</string>
+				<string>C977DC7314FADF9500A40096</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -519,7 +519,7 @@
 		<string>/Users/jal54/Downloads/GrammarBuddha/GrammarBuddha.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>289 196 788 504 0 0 1366 746 </string>
+	<string>26 74 1076 672 0 0 1366 746 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -596,7 +596,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>C947D12614FACA100056A180</string>
-				<string>C947D12714FACA100056A180</string>
+				<string>C977DC7414FADF9500A40096</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>

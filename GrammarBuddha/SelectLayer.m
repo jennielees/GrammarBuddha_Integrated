@@ -198,7 +198,7 @@
 
 -(void) chooseCat:(CCMenuItemImage *)whichImage {
     // not yet implemented
-    int cat = whichImage.tag;
+    //int cat = whichImage.tag;
 }
 
 // on "init" you need to initialize your instance
