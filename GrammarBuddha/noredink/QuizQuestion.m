@@ -40,11 +40,14 @@
 
 // This returns a question for the user. 15 percent of the time it will be a correct sentence. The rest of the time, an incorrect sentence
 - (NSString*) question {
-    if ((arc4random() % 100) < 15) {
+    // We're only using incorrect sentences at this time
+    /*if ((arc4random() % 100) < 15) {
         return [self.grammarQuestion aCorrectSentence];
     } else {
         return [self.grammarQuestion aIncorrectSentence];
-    }
+    }*/
+    
+    return [self.grammarQuestion aIncorrectSentence];
 }
 
 @end

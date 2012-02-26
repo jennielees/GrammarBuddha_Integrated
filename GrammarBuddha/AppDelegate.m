@@ -60,8 +60,8 @@
         
     }
     
-    [[NoRedInkHTTPClient sharedClient] pullQuestionsWithGroup:NoRedInkGroupCommasRunonsFragments subgroups:nil questions:10 exclusions:nil success:^(AFHTTPRequestOperation *operation, NSArray* questions) {
-        NSLog(@"Loaded questions: %@", questions);
+    [[NoRedInkHTTPClient sharedClient] pullQuestionsWithGroup:NoRedInkGroupCommasRunonsFragments subgroups:[NSArray arrayWithObject:@"339"] questions:5 exclusions:nil success:^(AFHTTPRequestOperation *operation, NSArray* questions) {
+        // Questions are now successfully loaded into the database with the users terms
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
