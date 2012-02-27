@@ -10,6 +10,10 @@
 // When you import this file, you import all the cocos2d classes
 #import "cocos2d.h"
 #import "GameConfig.h"
+#import "DataController.h"
+#import "Quiz.h"
+#import "QuizQuestion.h"
+
 // HelloWorldLayer
 @interface Sentences : CCLayer
 {
@@ -21,6 +25,7 @@
     CCSprite *selectedItem;
     int completedSent;
     CGPoint orgPos;
+    Quiz *quiz;
     int totalScore;
     int gameTimer;
     CCLabelTTF *scoreLabel;

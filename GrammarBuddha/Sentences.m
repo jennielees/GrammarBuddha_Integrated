@@ -15,6 +15,7 @@
 #import "MainMenuLayer.h"
 #import "GameManager.h"
 
+
 static const CGPoint comPos[3] = {
     {200, 200}, {400, 200}, {600, 200},
 };
@@ -22,6 +23,7 @@ BOOL res[5];
 
 // HelloWorldLayer implementation
 @implementation Sentences
+
 
 +(CCScene *) scene
 {
@@ -154,6 +156,10 @@ BOOL res[5];
 	if( (self = [super init])) {
         completedSent = 0;
         count = arc4random()%SENTENCES_NUM;
+        
+        NSError *error;
+        quiz = [[DataController shared] createQuizWithQuestions:5 error:&error];
+        
         CGSize winSize = [CCDirector sharedDirector].winSize;
         CCSprite *bg = [CCSprite spriteWithFile:@"backgroundGame.png"];
         bg.position = ccp(winSize.width/2, winSize.height/2);
@@ -164,7 +170,10 @@ BOOL res[5];
         }
        sentWordList = [[NSMutableArray alloc] init];
         for(int i = 0; i < SENTENCES_NUM; i++) {
-            NSArray *wordsAndEmptyStrings = [sentenceList[i] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+//            NSArray *wordsAndEmptyStrings = [sentenceList[i] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+     // JAMES CODE
+            NSArray *wordsAndEmptyStrings = [[[quiz.quizQuestions objectAtIndex:i] question] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            
             wordsArray[i] = [[wordsAndEmptyStrings filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"length > 0"]] retain];
             NSLog(@"sentence %d = %@", i, words[i]);
         }
