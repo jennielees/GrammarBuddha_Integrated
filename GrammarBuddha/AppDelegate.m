@@ -47,16 +47,17 @@
 }
 - (void) applicationDidFinishLaunching:(UIApplication*)application
 {
+    [[DataController shared] resetStore];
     
     // remove after ui is placed in. These calls are just demonstrating use.
     if ([[DataController shared] numberOfRelevantTerms] == 0) {
-        [[DataController shared] createRelevantTermWithName:@"James Richard" gender:RelevantTermGenderMale];
-        [[DataController shared] createRelevantTermWithName:@"Jeff Scheur" gender:RelevantTermGenderMale];
-        [[DataController shared] createRelevantTermWithName:@"Shanson Lunny" gender:RelevantTermGenderMale];
-        [[DataController shared] createRelevantTermWithName:@"Jennie Lee" gender:RelevantTermGenderFemale];
-        [[DataController shared] createRelevantTermWithName:@"Jordan Kandah" gender:RelevantTermGenderFemale];
-        [[DataController shared] createRelevantTermWithName:@"Emmy Chen" gender:RelevantTermGenderFemale];
-        [[DataController shared] createRelevantTermWithName:@"Anita" gender:RelevantTermGenderFemale];
+        [[DataController shared] createRelevantTermWithName:@"Bella Swan" gender:RelevantTermGenderFemale];
+        [[DataController shared] createRelevantTermWithName:@"Hermione Granger" gender:RelevantTermGenderFemale];
+        [[DataController shared] createRelevantTermWithName:@"Katniss Everdeen" gender:RelevantTermGenderFemale];
+        [[DataController shared] createRelevantTermWithName:@"Jeff Scheuer" gender:RelevantTermGenderMale];
+        [[DataController shared] createRelevantTermWithName:@"Khalid Smith" gender:RelevantTermGenderMale];
+        [[DataController shared] createRelevantTermWithName:@"Babur Habib" gender:RelevantTermGenderMale];
+        [[DataController shared] createRelevantTermWithName:@"Ahmed Siddiqui" gender:RelevantTermGenderMale];
         
     }
     

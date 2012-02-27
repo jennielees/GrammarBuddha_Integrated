@@ -415,15 +415,15 @@ BOOL res[5];
   //  id seq = [CCSequence actions:rotate, rotateBk, nil];
  //   id blink = [CCBlink actionWithDuration:2 blinks:3];
     //id spawn1 = [CCSpawn actions: blink, nil];
-    id move = [CCMoveTo actionWithDuration:1 position:ccp(winSize.width-200, winSize.height-70)];
-    id feadout = [CCScaleTo actionWithDuration:1 scale:0.2];
-    id spawn = [CCSpawn actions:move, feadout, nil];
-    id remove3 = [CCCallFuncND actionWithTarget:result  selector:@selector(removeFromParentAndCleanup:) data:(void*)YES];
-    [result runAction:[CCSequence actions:spawn, remove3, nil]];
-    
+    if (result) {
+        id move = [CCMoveTo actionWithDuration:1 position:ccp(winSize.width-200, winSize.height-70)];
+        id feadout = [CCScaleTo actionWithDuration:1 scale:0.2];
+        id spawn = [CCSpawn actions:move, feadout, nil];
+        id remove3 = [CCCallFuncND actionWithTarget:result  selector:@selector(removeFromParentAndCleanup:) data:(void*)YES];
+        [result runAction:[CCSequence actions:spawn, remove3, nil]];
+    }
     // Removed code to display the checkmark, now we are going to update the score
     
-    totalScore += 100;
     [scoreLabel setString:[NSString stringWithFormat:@"%d",totalScore]];
     
     if(completedSent==SENTENCES_NUM) {
@@ -433,10 +433,86 @@ BOOL res[5];
         [self performSelector:@selector(goSentences2) withObject:nil afterDelay:1];
     }
 }
+
+-(BOOL) checkAnswer:(NSString*) submit {
+    BOOL result = NO;
+    NSLog(@"submit: %@", submit);
+   // NSLog(@"answer: %@", (NSString*)rightSentenceList[count]);
+   // if([submit isEqualToString:(NSString*)rightSentenceList[count]]) {
+   //     result = YES;
+   // };
+    
+    result = YES; // [[quiz.quizQuestions objectAtIndex:count] answerQuestionWithSentence:submit];
+
+    return result;
+}
+
+-(void) goSubmit {
+    
+    NSLog(@"Submit called");
+    
+    NSString *sentence = [NSString stringWithString:@""];;
+    for(int i = 0; i < sentWordList.count; i++) {
+        CCLabelTTF *label = [sentWordList objectAtIndex:i];
+        if(i==0) {
+            sentence = [sentence stringByAppendingFormat:@"%@", label.string];
+        } else {
+            if(insertIndex==i-1)  sentence = [sentence stringByAppendingFormat:@" %@", selectedItem.string];
+            sentence = [sentence stringByAppendingFormat:@" %@", label.string];
+        }
+        
+    }
+    NSLog(@"sentence \n %@", sentence);
+    if([self checkAnswer:sentence]) {
+        res[completedSent] = YES;
+        buddha.scaleX=0.6 + completedSent*0.1;
+        buddha.scaleY=0.6 + completedSent*0.1;
+        
+        CGSize winSize = [CCDirector sharedDirector].winSize;
+        CCSprite *rightSprite = [CCSprite spriteWithFile:@"oneHundredPoints.png"];
+        rightSprite.position = ccp(winSize.height/2, winSize.width/2);
+        [self addChild:rightSprite z:20000];
+        [self performSelector:@selector(playResult:) withObject:rightSprite afterDelay:1];
+        totalScore += 100;
+
+        
+    }
+    else {
+        res[completedSent] = NO;
+        [self playResult:nil];
+    }
+    
+    double delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        
+        id moveAction = [CCMoveBy actionWithDuration:1.0f
+                                            position:ccp(-1500, 0)];
+        id moveEffect = [CCEaseIn actionWithAction:moveAction rate:0.8f];
+        
+        for(int i = 0;i < words[count].count; i++) {
+            CCLabelTTF *word1 = [sentWordList objectAtIndex:i];
+            
+            // ANIMATE CODE
+            [word1 runAction:[[moveEffect copy] autorelease]];
+            
+            //    NSLog(@"Ran move effect");
+            
+        }
+        [selectedItem runAction:[[moveEffect copy] autorelease]];
+        
+        
+    });
+    
+    
+}
+
+
+
 // BEGIN CHANGED GESTURE CODE
 // This removed from touch and made into its own function.
 -(void) checkSentenceAndIncrement:(int) i {
-    BOOL right = NO;
+ //   BOOL right = NO;
     NSLog(@"CHECK");
     // was punc added?
     if (selectedItem) {
@@ -447,17 +523,20 @@ BOOL res[5];
         [b setVisible:NO];
         [self repostionSentence:i];
     }
-    right = YES;
+   // right = YES;
+    
+    
+    //BOOL correct = [[quiz.quizQuestions objectAtIndex:count] answerQuestionWithSentence:"asdf"];
+  //  [self goSubmit];
     // should check the right or wrong
-    res[completedSent] = TRUE;
-    CGSize winSize = [CCDirector sharedDirector].winSize;
-    CCSprite *rightSprite = [CCSprite spriteWithFile:@"oneHundredPoints.png"];
-    rightSprite.position = ccp(winSize.height/2, winSize.width/2);
-    [self addChild:rightSprite z:20000];
-    [self performSelector:@selector(playResult:) withObject:rightSprite afterDelay:1];
-    completedSent++;
-    buddha.scaleX=0.6 + completedSent*0.1;
-    buddha.scaleY=0.6 + completedSent*0.1;
+    // res[completedSent] = TRUE;
+    //  CGSize winSize = [CCDirector sharedDirector].winSize;
+    // CCSprite *rightSprite = [CCSprite spriteWithFile:@"oneHundredPoints.png"];
+    // rightSprite.position = ccp(winSize.height/2, winSize.width/2);
+    // [self addChild:rightSprite z:20000];
+    // [self performSelector:@selector(playResult:) withObject:rightSprite afterDelay:1];
+    //completedSent++;
+    // buddha.scaleX=0.6 + completedSent*0.1;
 
 }
 
@@ -472,12 +551,12 @@ BOOL res[5];
     float swipeLength = ccpDistance(firstTouch, lastTouch);
     NSLog(@"Swipe length: %f", swipeLength);
     //Check if the swipe is a left swipe and long enough
-    NSLog(@"firstTouch.y: %f", firstTouch.y);
-    NSLog(@"firstTouch.y: %f", firstTouch.x);
-    NSLog(@"lastTouch.y: %f", lastTouch.x);
-    NSLog(@"lastTouch.y: %f", lastTouch.y);
+  //  NSLog(@"firstTouch.y: %f", firstTouch.y);
+  //  NSLog(@"firstTouch.y: %f", firstTouch.x);
+  //  NSLog(@"lastTouch.y: %f", lastTouch.x);
+  //  NSLog(@"lastTouch.y: %f", lastTouch.y);
     
-    double delayInSeconds = 2.0;
+    double delayInSeconds = 1.0;
     
     if (firstTouch.y < 500 && firstTouch.y > 300 && firstTouch.x > lastTouch.x && swipeLength > 200) {
         // Call next Sentence
@@ -485,23 +564,10 @@ BOOL res[5];
        
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self checkSentenceAndIncrement:1000];
+            [self goSubmit];
 
         });
-
-       
-        for(int i = 0;i < words[count].count; i++) {
-            CCLabelTTF *word1 = [sentWordList objectAtIndex:i];
-            
-            // ANIMATE CODE
-            id moveAction = [CCMoveBy actionWithDuration:1.0f
-                                                position:ccp(-1500, 0)];
-            id moveEffect = [CCEaseIn actionWithAction:moveAction rate:0.8f];
-            [word1 runAction:[[moveEffect copy] autorelease]];
-        //    NSLog(@"Ran move effect");
-                     
-         }
-        
+              
         
         return;
     } 
@@ -518,7 +584,6 @@ BOOL res[5];
         }
     } 
      // end is it a word?
-
     
     
     if(selectedItem) {   
@@ -544,28 +609,10 @@ BOOL res[5];
             }
             
             if(CGRectContainsPoint(dropArea, touchLocation)) {
+                insertIndex=i;
+                
                 [self checkSentenceAndIncrement:i];
-
-                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                    
-                    id moveAction = [CCMoveBy actionWithDuration:1.0f
-                                                        position:ccp(-1500, 0)];
-                    id moveEffect = [CCEaseIn actionWithAction:moveAction rate:0.8f];
-                    
-                    for(int i = 0;i < words[count].count; i++) {
-                        CCLabelTTF *word1 = [sentWordList objectAtIndex:i];
-                        
-                        // ANIMATE CODE
-                        [word1 runAction:[[moveEffect copy] autorelease]];
-                        
-                        //    NSLog(@"Ran move effect");
-                        
-                    }
-                    [selectedItem runAction:[[moveEffect copy] autorelease]];
-                    
-
-                });
+                
                 
                               // this checking needs cleanup!
                 break;            

@@ -22,10 +22,16 @@
     NSMutableArray *sentWordList;
     CCSprite *sentenceBox, *buddha, *badBuddha;
     CCSprite *commas[COMMAS_NUM];
-    CCSprite *selectedItem;
+    CCLabelTTF *selectedItem;
     int completedSent;
     CGPoint orgPos;
     Quiz *quiz;
+    
+    NSMutableArray *questions;
+    NSString *answer[SENTENCES_NUM];
+    int insertIndex;
+
+    
     int totalScore;
     int gameTimer;
     CCLabelTTF *scoreLabel;

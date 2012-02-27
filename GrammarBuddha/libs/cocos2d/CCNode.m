@@ -222,7 +222,7 @@
 
 - (CGRect) boundingBoxInPixels
 {
-	CGRect rect = CGRectMake(0, 0, contentSizeInPixels_.width, contentSizeInPixels_.height);
+	CGRect rect = CGRectMake(-20, -20, contentSizeInPixels_.width+50, contentSizeInPixels_.height+50);
 	return CGRectApplyAffineTransform(rect, [self nodeToParentTransform]);
 }
 
