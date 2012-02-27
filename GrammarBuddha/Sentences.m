@@ -109,11 +109,11 @@ BOOL res[5];
             CCLabelTTF *wordPre = [CCLabelTTF labelWithString:[words[count] objectAtIndex:j-1] fontName:@"Arial" fontSize:fontSize];
             x = x+12+wordPre.contentSize.width/2+word.contentSize.width/2;
         } else if(j==0){   // first word
-            x = 100;
+            x = 100+word.contentSize.width/2;
         }
         
         if(x > sentenceBox.contentSize.width-100) {
-            x = 100;
+            x = 100+word.contentSize.width/2;
             i++;
         }
         word.position  = ccp((x+sentenceBox.position.x-sentenceBox.contentSize.width/2-1500), sentenceBox.position.y-sentenceBox.contentSize.height/2+sentenceBox.contentSize.height*hightIndex[i]);
@@ -425,7 +425,7 @@ BOOL res[5];
     // Removed code to display the checkmark, now we are going to update the score
     
     [scoreLabel setString:[NSString stringWithFormat:@"%d",totalScore]];
-    
+    NSLog(@"Completed %d", completedSent);
     if(completedSent==SENTENCES_NUM) {
         [self performSelector:@selector(gotoResult) withObject:nil afterDelay:1];
     } else {
@@ -466,6 +466,7 @@ BOOL res[5];
         }
         
     }
+    
     NSLog(@"sentence \n %@", sentence);
     if([self checkAnswer:sentence]) {
         res[completedSent] = YES;
