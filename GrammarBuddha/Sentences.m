@@ -429,7 +429,6 @@ BOOL res[5];
     if(completedSent==SENTENCES_NUM) {
         [self performSelector:@selector(gotoResult) withObject:nil afterDelay:1];
     } else {
-        
         [self performSelector:@selector(goSentences2) withObject:nil afterDelay:1];
     }
 }
@@ -450,6 +449,11 @@ BOOL res[5];
 -(void) goSubmit {
     
     NSLog(@"Submit called");
+    completedSent++;
+    count++;
+    if (count == SENTENCES_NUM) { 
+        count = 0;
+    }
     
     NSString *sentence = [NSString stringWithString:@""];;
     for(int i = 0; i < sentWordList.count; i++) {
